@@ -1,4 +1,4 @@
-;; --- VARIABLES ---
+; --- VARIABLES ---
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;; --- FUNCTIONS ---
@@ -20,7 +20,7 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (global-display-line-numbers-mode 1) 
-(fido-vertical-mode 1)
+(fido-mode 1)
 
 ;; --- PACKAGE LOADING ---
 
@@ -30,11 +30,13 @@
 
 ;; load custom packages
 (require 'simpc-mode)
+(require 'odin-mode)
 
 ;; existing packages
 (use-package magit :ensure t)
 (use-package multiple-cursors :ensure t)
 (use-package jupyter :ensure t)
+(use-package rust-mode :ensure t)
 
 ;; --- CONFIG ---
 
@@ -50,6 +52,9 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-\"") 'mc/skip-to-next-like-this)
 (global-set-key (kbd "C-:") 'mc/skip-to-previous-like-this)
+
+;; rust keys
+(global-set-key (kbd "C-M-=") 'rust-run)
 
 ;; dupe line key
 (global-set-key (kbd "C-,") 'rc/duplicate-line)
