@@ -14,6 +14,10 @@
     (move-beginning-of-line 1)
     (forward-char column)))
 
+(defun om/odin-run ()
+  "Run 'odin run .' in compilation buffer"
+  (interactive)
+  (compile "odin run ."))
 
 ;; --- MODE SETTINGS ---
 (tool-bar-mode 0)
@@ -28,15 +32,16 @@
 (add-to-list 'load-path "~/.emacs.d/emacs.local")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-;; load custom packages
-(require 'simpc-mode)
-(require 'odin-mode)
-
 ;; existing packages
 (use-package magit :ensure t)
 (use-package multiple-cursors :ensure t)
 (use-package jupyter :ensure t)
 (use-package rust-mode :ensure t)
+(use-package markdown-mode :ensure t)
+
+;; load custom packages
+(require 'simpc-mode)
+(require 'odin-mode)
 
 ;; --- CONFIG ---
 
@@ -52,6 +57,7 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-\"") 'mc/skip-to-next-like-this)
 (global-set-key (kbd "C-:") 'mc/skip-to-previous-like-this)
+(global-set-key (kbd "C-c C-c") 'om/odin-run)
 
 ;; rust keys
 (global-set-key (kbd "C-M-=") 'rust-run)
