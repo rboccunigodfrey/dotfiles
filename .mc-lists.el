@@ -8,4 +8,5 @@
 (setq mc/cmds-to-run-once
       '(
 	toggle-input-method
+	undo-redo
 	))
