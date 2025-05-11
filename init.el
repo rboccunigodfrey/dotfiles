@@ -3,6 +3,8 @@
 (setq treesit-language-source-alist
       '((c3 "https://github.com/c3lang/tree-sitter-c3")))
 (setq treesit-font-lock-level 4)
+(setq auto-save-file-name-transforms
+          `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
 
 (use-package emacs
   :custom
