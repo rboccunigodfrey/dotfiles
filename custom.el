@@ -11,11 +11,9 @@
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" "e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7" default))
  '(default-frame-alist '((internal-border-width . 5) (drag-internal-border . 1)))
  '(inhibit-startup-screen t)
- '(initial-frame-alist
-   '((font . "FiraCode Nerd Font Mono-12")
-     (vertical-scroll-bars)))
+ '(initial-frame-alist '((font . "FiraCode-12") (vertical-scroll-bars)))
  '(package-selected-packages
-   '(lsp-ui ccls ccls-mode platformio-mode company svelte-mode rustic exec-path-from-shell opam-switch-mode cape eat emacs-eat orderless org-roam lsp-mode embark-consult embark which-key whick-key avy corfu ligature markdown-mode rust-mode jupyter multiple-cursors magit gruber-darker-theme))
+   '(dap-gdb lsp-ui ccls ccls-mode platformio-mode company svelte-mode rustic exec-path-from-shell opam-switch-mode cape eat emacs-eat orderless org-roam lsp-mode embark-consult embark which-key whick-key avy corfu ligature markdown-mode rust-mode jupyter multiple-cursors magit gruber-darker-theme))
  '(warning-minimum-level :error))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

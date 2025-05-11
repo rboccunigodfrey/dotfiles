@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	c-electric-slash
+	my-c-ts-compile
 	))
 
 (setq mc/cmds-to-run-once

@@ -59,12 +59,33 @@
 (use-package platformio-mode :ensure t)
 (use-package lsp-mode :ensure t)
 (use-package lsp-ui :ensure t)
-;; or
-(use-package eglot :ensure t)
+(use-package dap-mode :ensure t)
+
+(with-eval-after-load 'dap-mode
+  (dap-mode 1)
+
+  ;; The modes below are optional
+
+  (dap-ui-mode 1)
+  ;; enables mouse hover support
+  (dap-tooltip-mode 1)
+  ;; use tooltips for mouse hover
+  ;; if it is not enabled `dap-mode' will use the minibuffer.
+  (tooltip-mode 1)
+  ;; displays floating panel with debug buttons
+  ;; requies emacs 26+
+  (dap-ui-controls-mode 1))
+
+(require 'dap-gdb) 					;
+					; or
 (use-package ccls :ensure t
   :hook ((c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
 (setq ccls-executable "ccls")
+
+
+(use-package eglot :ensure t)
+
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
 			       		("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
@@ -246,8 +267,8 @@
 
 (defun my-c3-ts-mode-setup ()
   "Setup custom keybindings for c3-ts-mode."
-  (local-set-key (kbd "C-c C-c") 'my-c3-ts-compile)
-  (local-set-key (kbd "C-c M-c") 'my-c3-ts-proj-run))
+  (local-set-key (kbd "C-c c") 'my-c3-ts-compile)
+  (local-set-key (kbd "C-c x") 'my-c3-ts-proj-run))
   
 (add-hook 'c3-ts-mode-hook 'my-c3-ts-mode-setup)
 
@@ -263,8 +284,9 @@
 
 (defun my-c-ts-mode-setup ()
   "Setup custom keybindings for c-ts-mode."
-  (local-set-key (kbd "C-c C-c") 'my-c-ts-compile)
-  (local-set-key (kbd "C-c C-x") 'my-c-ts-execute))
+  (local-set-key (kbd "C-c C-c c") 'my-c-ts-compile)
+  (local-set-key (kbd "C-c C-c x") 'my-c-ts-execute)
+  (local-set-key (kbd "C-c C-c d") 'dap-hydra))
 
 
 (add-hook 'simpc-mode-hook 'my-c-ts-mode-setup)
@@ -298,7 +320,7 @@
 ;; --- CONFIG ---
 
 ;; simpc-mode filetype config
-(add-to-list 'auto-mode-alist '("\\.[hc]\\(\\)?\\'" . simpc-mode))
+;(add-to-list 'auto-mode-alist '("\\.[hc]\\(\\)?\\'" . simpc-mode))
 
 ;; --- KEY SETTINGS ---
 
