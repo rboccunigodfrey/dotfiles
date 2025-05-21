@@ -1,10 +1,9 @@
-; --- VARIABLES ---
+;--- VARIABLES ---
 (setq custom-file "~/.emacs.d/custom.el")
 (setq treesit-language-source-alist
       '((c3 "https://github.com/c3lang/tree-sitter-c3")))
 (setq treesit-font-lock-level 4)
-(setq auto-save-file-name-transforms
-          `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
+
 
 (use-package emacs
   :custom
@@ -27,13 +26,20 @@
 
 ;; --- PACKAGE LOADING ---
 
+(require 'package)
+
 ;; custom package location
 (add-to-list 'load-path "~/.emacs.d/emacs.local")
-(add-to-list 'load-path "/home/gimli/.opam/4.14.0/share/emacs/site-lisp")
+;(add-to-list 'load-path "/home/gimli/.opam/4.14.0/share/emacs/site-lisp")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-
+;; themes
+(use-package horizon-theme :ensure t)
+(use-package dracula-theme :ensure t)
 ;; existing packages
+
+(use-package emms :ensure t)
 (use-package exec-path-from-shell :ensure t)
 (use-package vertico :ensure t)
 (use-package consult :ensure t)
@@ -42,6 +48,10 @@
 (use-package embark-consult :ensure t)
 (use-package lua-mode :ensure t)
 (use-package company :ensure t)
+
+(with-eval-after-load 'company
+  (add-hook 'c-mode-hook 'company-mode)
+  (add-hook 'odin-mode-hook 'company-mode))
 
 (use-package cape :ensure t
   :bind ("C-c p" . cape-prefix-map)
@@ -224,29 +234,29 @@
 ;; load custom packages
 
 (require 'simpc-mode)
-(require 'ocp-indent)
-(load "/home/gimli/.opam/4.14.0/share/emacs/site-lisp/tuareg-site-file")
-
-(use-package opam-switch-mode
-  :ensure t
-  :hook
-  ((coq-mode tuareg-mode) . opam-switch-mode))
-
-
-(let ((opam-share (ignore-errors (car (process-lines "opam" "var" "share")))))
-  (when (and opam-share (file-directory-p opam-share))
-    ;; Register Merlin
-    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-    (autoload 'merlin-mode "merlin" nil t nil)
-    ;; Automatically start it in OCaml buffers
-    (add-hook 'tuareg-mode-hook 'merlin-mode t)
-    (add-hook 'caml-mode-hook 'merlin-mode t)
-    ;; Use opam switch to lookup ocamlmerlin binary
-    (setq merlin-command 'opam)
-    ;; To easily change opam switches within a given Emacs session, you can
-    ;; install the minor mode https://github.com/ProofGeneral/opam-switch-mode
-    ;; and use one of its "OPSW" menus.
-    ))
+;(require 'ocp-indent)
+;(load "/home/gimli/.opam/4.14.0/share/emacs/site-lisp/tuareg-site-file")
+;
+;(use-package opam-switch-mode
+;  :ensure t
+;  :hook
+;  ((coq-mode tuareg-mode) . opam-switch-mode));
+;
+;
+;(let ((opam-share (ignore-errors (car (process-lines "opam" "var" "share")))))
+;  (when (and opam-share (file-directory-p opam-share))
+;    ;; Register Merlin
+;    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+;    (autoload 'merlin-mode "merlin" nil t nil)
+;    ;; Automatically start it in OCaml buffers
+;    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+;    (add-hook 'caml-mode-hook 'merlin-mode t)
+;    ;; Use opam switch to lookup ocamlmerlin binary
+;    (setq merlin-command 'opam)
+;    ;; To easily change opam switches within a given Emacs session, you can
+;    ;; install the minor mode https://github.com/ProofGeneral/opam-switch-mode
+;    ;; and use one of its "OPSW" menus.
+;    ))
 
 (use-package fennel-mode
   :mode ("\\.fnl\\'". fennel-mode))
