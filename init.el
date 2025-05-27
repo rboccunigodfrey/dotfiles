@@ -3,7 +3,7 @@
 (setq treesit-language-source-alist
       '((c3 "https://github.com/c3lang/tree-sitter-c3")))
 (setq treesit-font-lock-level 4)
-
+(setq inhibit-splash-screen t)
 
 (use-package emacs
   :custom
@@ -32,12 +32,38 @@
 (add-to-list 'load-path "~/.emacs.d/emacs.local")
 ;(add-to-list 'load-path "/home/gimli/.opam/4.14.0/share/emacs/site-lisp")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; themes
 (use-package horizon-theme :ensure t)
 (use-package dracula-theme :ensure t)
 ;; existing packages
+
+(use-package auctex :ensure t)
+
+(with-eval-after-load 'auctex
+  (add-hook 'LaTeX-mode-hook (lambda () (setq TeX-command-default "LaTeXmk")))
+  (setq TeX-source-correlate-mode t))
+
+(use-package reftex :ensure t)
+(use-package company-auctex :ensure t)
+(use-package company-reftex :ensure t)
+(use-package company-math :ensure t)
+
+(use-package pdf-tools :ensure t
+  :init
+  (pdf-tools-install)
+  :config
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+	TeX-source-correlate-start-server t)
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  (add-hook 'pdf-view-mode-hook 'pdf-view-themed-minor-mode)
+  (setq pdf-view-use-scaling t)
+  (setq pdf-view-resize-factor 1.05)
+  :bind (:map pdf-view-mode-map
+              ("<left>" . pdf-view-previous-page-command)
+              ("<right>" . pdf-view-next-page-command)))
+
 
 (use-package emms :ensure t)
 (use-package exec-path-from-shell :ensure t)
@@ -51,7 +77,9 @@
 
 (with-eval-after-load 'company
   (add-hook 'c-mode-hook 'company-mode)
-  (add-hook 'odin-mode-hook 'company-mode))
+  (add-hook 'odin-mode-hook 'company-mode)
+  (add-hook 'zig-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode))
 
 (use-package cape :ensure t
   :bind ("C-c p" . cape-prefix-map)
@@ -70,6 +98,11 @@
 (use-package markdown-mode :ensure t)
 (use-package platformio-mode :ensure t)
 (use-package lsp-mode :ensure t)
+
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration '(".*\\.tex$" . "texlib"))
+  (add-to-list 'lsp-language-id-configuration '(".*\\.zig$" . "zls")))
+
 (use-package lsp-ui :ensure t)
 (use-package dap-mode :ensure t)
 
@@ -105,15 +138,16 @@
   (add-to-list 'eglot-server-programs '((fennel-mode) "fennel-ls"))
   (add-to-list 'eglot-server-programs '((odin-mode) "ols"))
   (add-to-list 'eglot-server-programs '((c3-ts-mode) "c3lsp"))
+  (add-to-list 'eglot-server-programs '((LaTeX-mode) "texlab"))
+  (add-to-list 'eglot-server-programs '((zig-mode) "zls"))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'simpc-mode-hook 'eglot-ensure)
   (add-hook 'rust-mode 'eglot-ensure)
   (add-hook 'fennel-mode 'eglot-ensure)
   (add-hook 'odin-mode 'eglot-ensure)
   (add-hook 'c3-ts-mode 'eglot-ensure)
+  (add-hook 'zig-mode-hook 'eglot-ensure)
   )
-
-
 
 ;;(use-package org-roam :ensure t)
 (use-package eat :ensure t)
@@ -318,7 +352,10 @@
 (add-hook 'odin-mode-hook 'my-odin-mode-setup)
 
 
+(use-package zig-mode :ensure t)
+
 ;; --- MODE SETTINGS ---
+
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
