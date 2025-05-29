@@ -38,6 +38,9 @@
 (use-package dracula-theme :ensure t)
 ;; existing packages
 
+(use-package doom-modeline :ensure t
+  :init (doom-modeline-mode 1))
+
 (use-package auctex :ensure t)
 
 (with-eval-after-load 'auctex
@@ -119,7 +122,14 @@
   (tooltip-mode 1)
   ;; displays floating panel with debug buttons
   ;; requies emacs 26+
-  (dap-ui-controls-mode 1))
+  (dap-ui-controls-mode 1)
+  (dap-register-debug-template
+   "GDB::main"
+   (list :type "gdb" ;; Change this to your language (e.g., "cppdbg" for C++)
+	 ;:cwd "."       ;; Working directory (nil defaults to the project root)
+	 :program "./main" ;; Path to your program
+	 ;:request "launch"
+	 :name "GDB::main")))
 
 (require 'dap-gdb) 					;
 					; or
