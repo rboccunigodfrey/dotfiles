@@ -1,14 +1,13 @@
-;--- VARIABLES ---
+;--- VARIABLES ---  -*- lexical-binding: t; -*-
 (setq custom-file "~/.emacs.d/custom.el")
-(setq treesit-language-source-alist
-      '((c3 "https://github.com/c3lang/tree-sitter-c3")))
 (setq treesit-font-lock-level 4)
 (setq inhibit-splash-screen t)
-
+(set-face-attribute 'default nil :height 150 :font "MesloLGS NF")
 (setq treesit-language-source-alist
-    '((bash "https://github.com/tree-sitter/tree-sitter-bash"))
+    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
      (cmake "https://github.com/uyha/tree-sitter-cmake")
      (c "https://github.com/tree-sitter/tree-sitter-c")
+     (c3 "https://github.com/c3lang/tree-sitter-c3")
      (css "https://github.com/tree-sitter/tree-sitter-css")
      (elisp "https://github.com/Wilfred/tree-sitter-elisp")
      (go "https://github.com/tree-sitter/tree-sitter-go")
@@ -55,6 +54,10 @@
 (use-package horizon-theme :ensure t)
 (use-package dracula-theme :ensure t)
 ;; existing packages
+
+(use-package yasnippet :ensure t
+  :init (yas-global-mode 1))
+(use-package yasnippet-snippets :ensure t)
 
 (use-package doom-modeline :ensure t
   :init (doom-modeline-mode 1))
@@ -177,7 +180,24 @@
   (add-hook 'zig-mode-hook 'eglot-ensure)
   )
 
+
+
 ;;(use-package org-roam :ensure t)
+
+(defun org-mode-hide-stars ()
+  (font-lock-add-keywords
+   nil
+   '(("^\\*+ "
+      (0
+       (prog1 nil
+         (put-text-property (match-beginning 0) (match-end 1)
+                            'face (list :foreground
+                                        (face-attribute
+                                         'default :background)))))))))
+
+(add-hook 'org-mode-hook #'org-mode-hide-stars)
+
+
 (use-package eat :ensure t)
 (use-package ligature
   :ensure t
