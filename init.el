@@ -181,22 +181,11 @@
   )
 
 
-
-;;(use-package org-roam :ensure t)
-
-(defun org-mode-hide-stars ()
-  (font-lock-add-keywords
-   nil
-   '(("^\\*+ "
-      (0
-       (prog1 nil
-         (put-text-property (match-beginning 0) (match-end 1)
-                            'face (list :foreground
-                                        (face-attribute
-                                         'default :background)))))))))
-
-(add-hook 'org-mode-hook #'org-mode-hide-stars)
-
+(use-package org-roam :ensure t)
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package eat :ensure t)
 (use-package ligature
