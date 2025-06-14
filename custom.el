@@ -17,7 +17,7 @@
 	  doom-modeline dracula-theme eat embark-consult emms
 	  exec-path-from-shell horizon-theme jupyter ligature lsp-ui
 	  lua-mode magit marginalia multiple-cursors orderless
-	  pdf-tools platformio-mode rustic svelte-mode vertico
+	  pdf-tools platformio-mode realgud rustic svelte-mode vertico
 	  yasnippet-snippets zig-mode))
  '(pdf-view-incompatible-modes
    '(linum-mode linum-relative-mode helm-linum-relative-mode nlinum-mode

@@ -152,8 +152,10 @@
 	 ;:request "launch"
 	 :name "GDB::main")))
 
-(require 'dap-gdb) 					;
-					; or
+(require 'dap-gdb)
+
+(use-package realgud :ensure t)
+
 (use-package ccls :ensure t
   :hook ((c++-mode objc-mode cuda-mode) .
          (lambda () (require 'ccls) (lsp))))
