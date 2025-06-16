@@ -97,6 +97,7 @@
 (use-package embark :ensure t)
 (use-package embark-consult :ensure t)
 (use-package lua-mode :ensure t)
+(use-package glsl-mode :ensure t)
 (use-package company :ensure t)
 
 (with-eval-after-load 'company
