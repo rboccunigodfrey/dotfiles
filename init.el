@@ -122,11 +122,21 @@
 (use-package cc-mode :ensure t)
 (use-package markdown-mode :ensure t)
 (use-package platformio-mode :ensure t)
-(use-package lsp-mode :ensure t)
+(use-package lsp-mode :ensure t
+  :hook ((c++-mode) . lsp)
+  :commands lsp
+  :config (setq lsp-clients-clangd-executable "clangd"))
 
 (with-eval-after-load 'lsp-mode
+  (setq lsp-disabled-clients '(ccls))
   (add-to-list 'lsp-language-id-configuration '(".*\\.tex$" . "texlib"))
-  (add-to-list 'lsp-language-id-configuration '(".*\\.zig$" . "zls")))
+  (add-to-list 'lsp-language-id-configuration '(".*\\.zig$" . "zls"))
+  (add-to-list 'lsp-language-id-configuration '(c++-mode . "cpp"))
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection "clangd")
+    :major-modes '(c++-mode c-mode)
+    :server-id 'clangd)))
 
 (use-package lsp-ui :ensure t)
 (use-package dap-mode :ensure t)
@@ -157,10 +167,11 @@
 
 (use-package realgud :ensure t)
 
-(use-package ccls :ensure t
-  :hook ((c++-mode objc-mode cuda-mode) .
-         (lambda () (require 'ccls) (lsp))))
-(setq ccls-executable "ccls")
+;
+;(use-package ccls :ensure t
+;  :hook ((c++-mode objc-mode cuda-mode) .
+;         (lambda () (require 'ccls) (lsp))))
+;(setq ccls-executable "ccls")
 
 
 (use-package eglot :ensure t)
@@ -168,7 +179,7 @@
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
 			       		("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
-  (add-to-list 'eglot-server-programs '((c-mode simpc-mode) "clangd"))
+  (add-to-list 'eglot-server-programs '((c++-mode c-mode simpc-mode) "clangd"))
   (add-to-list 'eglot-server-programs '((fennel-mode) "fennel-ls"))
   (add-to-list 'eglot-server-programs '((odin-mode) "ols"))
   (add-to-list 'eglot-server-programs '((c3-ts-mode) "c3lsp"))
